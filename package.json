@@ -2,7 +2,7 @@
 	"name": "convex-shape",
 	"type": "module",
 	"root": true,
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"scripts": {
 		"build": "tun ./scripts/build.ts"
 	},

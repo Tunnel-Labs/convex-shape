@@ -1,18 +1,10 @@
-import type { Exact } from 'type-fest';
-import {
-	ShapeObjectProperties,
-	ShapeTypeProperties
-} from '../types/properties.js';
+import { ShapeObjectProperties } from '../types/properties.js';
 import type { ShapeRelation, ShapeRelationArray } from '../types/ref.js';
 import { TableDefinition } from 'convex/server';
 
-export type Shape<
-	$TableDefinition extends TableDefinition,
-	$T extends Exact<ShapeTypeProperties<$TableDefinition>, $T>
-> = $T;
-export function Shape<$ShapeType>(
-	properties: ShapeObjectProperties<$ShapeType>
-): ShapeObjectProperties<$ShapeType>;
+export function Shape<$TableDefinition extends TableDefinition>(
+	properties: ShapeObjectProperties<$TableDefinition>
+): ShapeObjectProperties<$TableDefinition>;
 export function Shape(shape: any): any {
 	return shape;
 }
