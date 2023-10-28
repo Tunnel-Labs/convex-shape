@@ -1,4 +1,4 @@
-import { GetIndexesFromTableDefinition } from 'src/types/indexes.js';
+import type { GetIndexesFromTableDefinition } from '../types/indexes.js';
 import { ShapeObjectProperties } from '../types/properties.js';
 import type {
 	ShapeId,
