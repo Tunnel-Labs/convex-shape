@@ -1,0 +1,22 @@
+{
+	"name": "convex-shape",
+	"type": "module",
+	"root": true,
+	"version": "0.0.0",
+	"scripts": {
+		"build": "tun ./scripts/build.ts"
+	},
+	"dependencies": {
+		"type-fest": "^4.6.0"
+	},
+	"peerDependencies": {
+		"convex": "^1.5.1"
+	},
+	"devDependencies": {
+		"@tunnel/tun": "^0.2.1",
+		"@types/node": "^20.8.9",
+		"convex": "^1.5.1",
+		"lionconfig": "^3.1.1",
+		"typescript": "^5.2.2"
+	}
+}
