@@ -1,3 +1,4 @@
+import { GetIndexesFromTableDefinition } from 'src/types/indexes.js';
 import { ShapeObjectProperties } from '../types/properties.js';
 import type {
 	ShapeId,
@@ -15,16 +16,30 @@ export function Shape(shape: any): any {
 }
 
 export const Relation = Object.assign(
-	<$TableName extends string>(
-		tableName: $TableName
-	): ShapeRelation<$TableName> => tableName as any,
+	<$TableDefinition extends TableDefinition>(): {
+		withIndex<$TableName extends string>(
+			tableName: $TableName,
+			index: keyof GetIndexesFromTableDefinition<$TableDefinition>
+		): ShapeRelation<$TableName>;
+	} => ({
+		withIndex(tableName, index) {
+			return { tableName, index } as any;
+		}
+	}),
 	{ __relation__: true }
 );
 
 export const RelationArray = Object.assign(
-	<$TableName extends string>(
-		tableName: $TableName
-	): ShapeRelationArray<$TableName> => tableName as any,
+	<$TableDefinition extends TableDefinition>(): {
+		withIndex<$TableName extends string>(
+			tableName: $TableName,
+			index: keyof GetIndexesFromTableDefinition<$TableDefinition>
+		): ShapeRelationArray<$TableName>;
+	} => ({
+		withIndex(tableName, index) {
+			return { tableName, index } as any;
+		}
+	}),
 	{ __relationArray__: true }
 );
 
