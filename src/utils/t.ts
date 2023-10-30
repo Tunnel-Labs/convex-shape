@@ -23,7 +23,7 @@ export const Relation = Object.assign(
 		): ShapeRelation<$TableName>;
 	} => ({
 		withIndex(tableName, index) {
-			return { tableName, index } as any;
+			return { tableName, index, type: 'relation' } as any;
 		}
 	}),
 	{ __relation__: true }
@@ -37,7 +37,7 @@ export const RelationArray = Object.assign(
 		): ShapeRelationArray<$TableName>;
 	} => ({
 		withIndex(tableName, index) {
-			return { tableName, index } as any;
+			return { tableName, index, type: 'relationArray' } as any;
 		}
 	}),
 	{ __relationArray__: true }
