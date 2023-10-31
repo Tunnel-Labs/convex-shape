@@ -8,7 +8,7 @@ import type {
 } from './ref.js';
 import type { GetDocumentFromTableDefinition } from './document.js';
 import type { RelationString, RelationStringArray } from './relation.js';
-import type * as t from '../utils/t.js';
+import type * as t from '../utils/callback-t.js';
 
 // prettier-ignore
 export type ShapeObjectProperties<$TableDefinition extends TableDefinition> = {
