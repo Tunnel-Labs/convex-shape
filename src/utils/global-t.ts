@@ -1,8 +1,8 @@
 import type { TableDefinition } from 'convex/server';
 import type { ShapeObjectProperties } from '../types/properties.js';
 import type { OnDeleteData } from '../types/delete.js';
-import { getCallbackT } from 'src/utils/callback-t.js';
-import { CallbackT } from 'src/types/callback-t.js';
+import type { CallbackT } from '../types/callback-t.js';
+import { getCallbackT } from '../utils/callback-t.js';
 
 export const onDelete = new Map<
 	/* hostTableName */ string,
