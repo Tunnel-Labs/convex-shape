@@ -5,32 +5,44 @@ import type { CallbackT } from '../types/callback-t.js';
 import { getCallbackT } from '../utils/callback-t.js';
 
 export const onDelete = new Map<
-	/* hostTableName */ string,
-	{ [foreignTableName: string]: OnDeleteData }
+	/* deletedTableName */ string,
+	{
+		[affectedTableName: string]: OnDeleteData;
+	}
 >();
 
 export function Shape<$HostTableDefinition extends TableDefinition>(
-	hostTableName: string,
+	tableName: string,
 	callback: (
 		t: CallbackT<$HostTableDefinition>
 	) => ShapeObjectProperties<$HostTableDefinition>
 ): ShapeObjectProperties<$HostTableDefinition> {
 	const shape = callback(getCallbackT());
 
-	for (const [field, value] of Object.entries(shape)) {
-		if (!('type' in value)) continue;
+	for (const [field, fieldValue] of Object.entries(shape)) {
+		if (!('type' in fieldValue)) continue;
 
-		const { type, tableName: foreignTableName, index, options } = value;
-		if (type === 'id') {
-			if (!onDelete.has(hostTableName)) {
-				onDelete.set(hostTableName, {});
+		if (fieldValue.type === 'id') {
+			// We treat the current table as the table that is affected by the deletion
+			const affectedTableName = tableName;
+			const {
+				// The table referenced by the key is considered the "foreign" table which has been deleted
+				tableName: deletedTableName,
+				index: affectedFieldIndex,
+				indexFields: affectedFieldIndexFields,
+				options
+			} = fieldValue;
+			if (!onDelete.has(deletedTableName)) {
+				onDelete.set(deletedTableName, {});
 			}
 
-			onDelete.get(hostTableName)![foreignTableName] = {
+			// When the foreign table is deleted, the affected table
+			onDelete.get(deletedTableName)![affectedTableName] = {
 				action: options.onDelete,
-				foreignIndex: index,
-				hostField: field
-			};
+				affectedFieldIndex,
+				affectedField: field,
+				affectedFieldIndexFields
+			} satisfies OnDeleteData;
 		}
 	}
 

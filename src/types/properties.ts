@@ -8,11 +8,11 @@ import type { CallbackT } from '../types/callback-t.js';
 // prettier-ignore
 export type ShapeObjectProperties<$TableDefinition extends TableDefinition> = {
 	[$DocumentKey in keyof GetDocumentFromTableDefinition<$TableDefinition>]:
-		NonNullable<GetDocumentFromTableDefinition<$TableDefinition>[$DocumentKey]> extends GenericId<infer $TableName> ?
+		NonNullable<GetDocumentFromTableDefinition<$TableDefinition>[$DocumentKey]> extends GenericId<string> ?
 			RelationData<'id'> :
-		NonNullable<GetDocumentFromTableDefinition<$TableDefinition>[$DocumentKey]> extends RelationString<infer $TableName> ?
+		NonNullable<GetDocumentFromTableDefinition<$TableDefinition>[$DocumentKey]> extends RelationString<string> ?
 			RelationData<'virtual'> :
-		NonNullable<GetDocumentFromTableDefinition<$TableDefinition>[$DocumentKey]> extends RelationStringArray<infer $TableName> ?
+		NonNullable<GetDocumentFromTableDefinition<$TableDefinition>[$DocumentKey]> extends RelationStringArray<string> ?
 			RelationData<'virtualArray'> :
 		CallbackT<$TableDefinition>
 }

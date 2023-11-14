@@ -1,5 +1,6 @@
 export interface OnDeleteData {
-	foreignIndex: string;
-	hostField: string;
+	affectedField: string;
+	affectedFieldIndex: string;
+	affectedFieldIndexFields: string[];
 	action: 'SetNull' | 'Cascade' | 'Restrict';
 }

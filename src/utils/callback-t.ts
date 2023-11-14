@@ -4,45 +4,64 @@ import type { RelationData } from '../types/relation.js';
 
 export function getCallbackT<$HostTableDefinition extends TableDefinition>() {
 	function Virtual<$TableDefinition extends TableDefinition>(): {
-		withForeignIndex<$TableName extends string>(
+		withForeignIndex<
+			$TableName extends string,
+			$IndexName extends keyof GetIndexesFromTableDefinition<$TableDefinition> &
+				string
+		>(
 			tableName: $TableName,
-			index: keyof GetIndexesFromTableDefinition<$TableDefinition>
+			index: $IndexName,
+			indexFields: GetIndexesFromTableDefinition<$TableDefinition>[$IndexName] &
+				string[]
 		): RelationData<'virtual'>;
 	} {
 		return {
-			withForeignIndex(tableName, index) {
-				return { type: 'virtual', tableName, index };
+			withForeignIndex(tableName, index, indexFields) {
+				return { type: 'virtual', tableName, index, indexFields };
 			}
 		};
 	}
 
 	function VirtualArray<$TableDefinition extends TableDefinition>(): {
-		withForeignIndex<$TableName extends string>(
+		withForeignIndex<
+			$TableName extends string,
+			$IndexName extends keyof GetIndexesFromTableDefinition<$TableDefinition> &
+				string
+		>(
 			tableName: $TableName,
-			index: keyof GetIndexesFromTableDefinition<$TableDefinition>
+			index: $IndexName,
+			indexFields: GetIndexesFromTableDefinition<$TableDefinition>[$IndexName] &
+				string[]
 		): RelationData<'virtualArray'>;
 	} {
 		return {
-			withForeignIndex(tableName, index) {
-				return { type: 'virtualArray', tableName, index };
+			withForeignIndex(tableName, index, indexFields) {
+				return { type: 'virtualArray', tableName, index, indexFields };
 			}
 		};
 	}
 
-	function Id<$TableName extends string>(
+	function Id<
+		$TableName extends string,
+		$IndexName extends
+			keyof GetIndexesFromTableDefinition<$HostTableDefinition> & string
+	>(
 		tableName: $TableName
 	): {
 		withHostIndex(
-			index: keyof GetIndexesFromTableDefinition<$HostTableDefinition>,
+			index: $IndexName,
+			indexFields: GetIndexesFromTableDefinition<$HostTableDefinition>[$IndexName] &
+				string[],
 			options: { onDelete: 'SetNull' | 'Cascade' | 'Restrict' }
 		): RelationData<'id'>;
 	} {
 		return {
 			withHostIndex(
 				index,
+				indexFields,
 				options: { onDelete: 'SetNull' | 'Cascade' | 'Restrict' }
 			) {
-				return { type: 'id', tableName, index, options };
+				return { type: 'id', tableName, index, indexFields, options };
 			}
 		};
 	}

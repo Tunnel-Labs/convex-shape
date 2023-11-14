@@ -7,7 +7,8 @@ export type RelationStringArray<$TableName extends string> =
 
 export interface RelationData<$Type extends 'virtual' | 'virtualArray' | 'id'> {
 	tableName: string;
-	index: any;
+	index: string;
+	indexFields: string[];
 	type: $Type;
 	options?: { onDelete: 'SetNull' | 'Cascade' | 'Restrict' };
 }
