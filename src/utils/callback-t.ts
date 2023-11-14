@@ -7,20 +7,25 @@ export function getCallbackT<$HostTableDefinition extends TableDefinition>() {
 	function Virtual<$TableDefinition extends TableDefinition>(): {
 		withForeignIndex<
 			$TableName extends string,
-			$IndexName extends keyof GetIndexesFromTableDefinition<$TableDefinition> &
-				string
+			$IndexName extends keyof GetIndexesFromTableDefinition<$TableDefinition>
 		>(
 			tableName: $TableName,
 			index: $IndexName,
 			// Convex adds "_creationTime" as the last field for every index
 			indexFields: WithoutLast<
-				GetIndexesFromTableDefinition<$TableDefinition>[$IndexName] & string[]
+				// @ts-expect-error: guaranteed to be an array of strings
+				GetIndexesFromTableDefinition<$TableDefinition>[$IndexName]
 			>
 		): RelationData<'virtual'>;
 	} {
 		return {
 			withForeignIndex(tableName, index, indexFields) {
-				return { type: 'virtual', tableName, index, indexFields };
+				return {
+					type: 'virtual',
+					tableName,
+					index: String(index),
+					indexFields: indexFields.map(String)
+				};
 			}
 		};
 	}
@@ -28,28 +33,32 @@ export function getCallbackT<$HostTableDefinition extends TableDefinition>() {
 	function VirtualArray<$TableDefinition extends TableDefinition>(): {
 		withForeignIndex<
 			$TableName extends string,
-			$IndexName extends keyof GetIndexesFromTableDefinition<$TableDefinition> &
-				string
+			$IndexName extends keyof GetIndexesFromTableDefinition<$TableDefinition>
 		>(
 			tableName: $TableName,
 			index: $IndexName,
 			// Convex adds "_creationTime" as the last field for every index
 			indexFields: WithoutLast<
-				GetIndexesFromTableDefinition<$TableDefinition>[$IndexName] & string[]
+				// @ts-expect-error: guaranteed to be an array of strings
+				GetIndexesFromTableDefinition<$TableDefinition>[$IndexName]
 			>
 		): RelationData<'virtualArray'>;
 	} {
 		return {
 			withForeignIndex(tableName, index, indexFields) {
-				return { type: 'virtualArray', tableName, index, indexFields };
+				return {
+					type: 'virtualArray',
+					tableName,
+					index: String(index),
+					indexFields: indexFields.map(String)
+				};
 			}
 		};
 	}
 
 	function Id<
 		$TableName extends string,
-		$IndexName extends
-			keyof GetIndexesFromTableDefinition<$HostTableDefinition> & string
+		$IndexName extends keyof GetIndexesFromTableDefinition<$HostTableDefinition>
 	>(
 		tableName: $TableName
 	): {
@@ -57,8 +66,8 @@ export function getCallbackT<$HostTableDefinition extends TableDefinition>() {
 			index: $IndexName,
 			// Convex adds "_creationTime" as the last field for every index
 			indexFields: WithoutLast<
-				GetIndexesFromTableDefinition<$HostTableDefinition>[$IndexName] &
-					string[]
+				// @ts-expect-error: guaranteed to be an array of strings
+				GetIndexesFromTableDefinition<$HostTableDefinition>[$IndexName]
 			>,
 			options: { onDelete: 'SetNull' | 'Cascade' | 'Restrict' }
 		): RelationData<'id'>;
@@ -69,7 +78,13 @@ export function getCallbackT<$HostTableDefinition extends TableDefinition>() {
 				indexFields,
 				options: { onDelete: 'SetNull' | 'Cascade' | 'Restrict' }
 			) {
-				return { type: 'id', tableName, index, indexFields, options };
+				return {
+					type: 'id',
+					tableName,
+					index: String(index),
+					indexFields: indexFields.map(String),
+					options
+				};
 			}
 		};
 	}
