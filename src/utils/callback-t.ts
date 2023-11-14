@@ -1,6 +1,7 @@
 import type { TableDefinition } from 'convex/server';
 import type { GetIndexesFromTableDefinition } from '../types/indexes.js';
 import type { RelationData } from '../types/relation.js';
+import { WithoutLast } from 'src/types/without-last.js';
 
 export function getCallbackT<$HostTableDefinition extends TableDefinition>() {
 	function Virtual<$TableDefinition extends TableDefinition>(): {
@@ -11,8 +12,10 @@ export function getCallbackT<$HostTableDefinition extends TableDefinition>() {
 		>(
 			tableName: $TableName,
 			index: $IndexName,
-			indexFields: GetIndexesFromTableDefinition<$TableDefinition>[$IndexName] &
-				string[]
+			// Convex adds "_creationTime" as the last field for every index
+			indexFields: WithoutLast<
+				GetIndexesFromTableDefinition<$TableDefinition>[$IndexName] & string[]
+			>
 		): RelationData<'virtual'>;
 	} {
 		return {
@@ -30,8 +33,10 @@ export function getCallbackT<$HostTableDefinition extends TableDefinition>() {
 		>(
 			tableName: $TableName,
 			index: $IndexName,
-			indexFields: GetIndexesFromTableDefinition<$TableDefinition>[$IndexName] &
-				string[]
+			// Convex adds "_creationTime" as the last field for every index
+			indexFields: WithoutLast<
+				GetIndexesFromTableDefinition<$TableDefinition>[$IndexName] & string[]
+			>
 		): RelationData<'virtualArray'>;
 	} {
 		return {
@@ -50,8 +55,11 @@ export function getCallbackT<$HostTableDefinition extends TableDefinition>() {
 	): {
 		withHostIndex(
 			index: $IndexName,
-			indexFields: GetIndexesFromTableDefinition<$HostTableDefinition>[$IndexName] &
-				string[],
+			// Convex adds "_creationTime" as the last field for every index
+			indexFields: WithoutLast<
+				GetIndexesFromTableDefinition<$HostTableDefinition>[$IndexName] &
+					string[]
+			>,
 			options: { onDelete: 'SetNull' | 'Cascade' | 'Restrict' }
 		): RelationData<'id'>;
 	} {
