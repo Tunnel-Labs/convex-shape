@@ -1,7 +1,7 @@
 import type { TableDefinition } from 'convex/server';
 import type { GetIndexesFromTableDefinition } from '../types/indexes.js';
 import type { RelationData } from '../types/relation.js';
-import { WithoutLast } from '../types/without-last.js';
+import type { WithoutLast } from '../types/without-last.js';
 
 export function getCallbackT<$HostTableDefinition extends TableDefinition>() {
 	function Virtual<$TableDefinition extends TableDefinition>(): {
