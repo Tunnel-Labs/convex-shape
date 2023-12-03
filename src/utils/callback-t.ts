@@ -1,6 +1,6 @@
 import type { TableDefinition } from 'convex/server';
 import type { GetIndexesFromTableDefinition } from '../types/indexes.js';
-import type { RelationData } from '../types/relation.js';
+import type { VirtualData } from '../types/virtual.js';
 import type { WithoutLast } from '../types/without-last.js';
 
 export function getCallbackT<$HostTableDefinition extends TableDefinition>() {
@@ -16,7 +16,7 @@ export function getCallbackT<$HostTableDefinition extends TableDefinition>() {
 				// @ts-expect-error: guaranteed to be an array of strings
 				GetIndexesFromTableDefinition<$TableDefinition>[$IndexName]
 			>
-		): RelationData<'virtual'>;
+		): VirtualData<'virtual'>;
 	} {
 		return {
 			withForeignIndex(tableName, index, indexFields) {
@@ -42,7 +42,7 @@ export function getCallbackT<$HostTableDefinition extends TableDefinition>() {
 				// @ts-expect-error: guaranteed to be an array of strings
 				GetIndexesFromTableDefinition<$TableDefinition>[$IndexName]
 			>
-		): RelationData<'virtualArray'>;
+		): VirtualData<'virtualArray'>;
 	} {
 		return {
 			withForeignIndex(tableName, index, indexFields) {
@@ -70,7 +70,7 @@ export function getCallbackT<$HostTableDefinition extends TableDefinition>() {
 				GetIndexesFromTableDefinition<$HostTableDefinition>[$IndexName]
 			>,
 			options: { onDelete: 'SetNull' | 'Cascade' | 'Restrict' }
-		): RelationData<'id'>;
+		): VirtualData<'id'>;
 	} {
 		return {
 			withHostIndex(
@@ -89,7 +89,14 @@ export function getCallbackT<$HostTableDefinition extends TableDefinition>() {
 		};
 	}
 
+	function Deprecated() {
+		return {
+			type: 'deprecated'
+		};
+	}
+
 	return {
+		Deprecated,
 		Id,
 		Virtual,
 		VirtualArray
